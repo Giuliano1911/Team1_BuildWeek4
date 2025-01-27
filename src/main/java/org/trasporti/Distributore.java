@@ -6,7 +6,7 @@ public class Distributore {
     private Disponibilita t_disponibilita;
 
     // Costruttore
-    public Distributore(int id, String nome, boolean disponibilita) {
+    public Distributore(int id, String nome, Disponibilita t_disponibilita) {
         this.id = id;
         this.nome = nome;
         this.t_disponibilita = t_disponibilita;
