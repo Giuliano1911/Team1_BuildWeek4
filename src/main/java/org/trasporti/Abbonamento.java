@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.trasporti.ENUMS.Validita;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "abbonamenti")
@@ -18,12 +19,12 @@ public class Abbonamento {
     @JoinColumn(name = "id_distributore")
     private Distributore distributore;
     @Column
-    private Date data_emissione;
+    private LocalDate data_emissione;
     @Column
     @Enumerated(EnumType.STRING)
     private Validita validita;
 
-    public Abbonamento(Long id, Tessera tessera, Distributore distributore, Date data_emissione, Validita validita) {
+    public Abbonamento(Long id, Tessera tessera, Distributore distributore, LocalDate data_emissione, Validita validita) {
         this.id = id;
         this.tessera = tessera;
         this.distributore = distributore;
@@ -55,11 +56,11 @@ public class Abbonamento {
         this.distributore = distributore;
     }
 
-    public Date getData_emissione() {
+    public LocalDate getData_emissione() {
         return data_emissione;
     }
 
-    public void setData_emissione(Date data_emissione) {
+    public void setData_emissione(LocalDate data_emissione) {
         this.data_emissione = data_emissione;
     }
 
