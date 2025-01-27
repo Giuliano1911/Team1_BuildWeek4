@@ -20,14 +20,26 @@ public class MezzoDAO {
     }
 
     public Mezzo getById(Long id) {
-        return null;
+        this.em.getTransaction().begin();
+        Mezzo mezzoDaTrovare = this.em.find(Mezzo.class, id);
+        this.em.getTransaction().commit();
+        return mezzoDaTrovare;
     }
 
     public void deleteById(Long id) {
-
+        this.em.getTransaction().begin();
+        Mezzo mezzoDaEliminare = this.em.find(Mezzo.class, id);
+        if (mezzoDaEliminare != null) {
+            this.em.remove(mezzoDaEliminare);
+            System.out.println("Mezzo eliminato");
+        } else System.out.println("Mezzo non trovato");
+        this.em.getTransaction().commit();
     }
 
     public List<Mezzo> getAll() {
-        return List.of();
+        this.em.getTransaction().begin();
+        List<Mezzo> list = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+        this.em.getTransaction().commit();
+        return list;
     }
 }

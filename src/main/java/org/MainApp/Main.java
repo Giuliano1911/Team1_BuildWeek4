@@ -13,10 +13,6 @@ public class Main {
         try {
             MezzoDAO mezzoDAO = new MezzoDAO(em);
 
-            Mezzo mezzo = new Mezzo("2-5", TipoMezzo.BUS, StatoMezzo.FUNZIONANTE);
-
-            mezzoDAO.save(mezzo);
-
         } catch (Exception e) {
             if (em.getTransaction().isActive())
                 em.getTransaction().rollback();
