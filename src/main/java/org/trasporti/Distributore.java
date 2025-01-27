@@ -1,5 +1,7 @@
 package org.trasporti;
 
+import org.trasporti.ENUMS.Disponibilita;
+
 public class Distributore {
     private int id;
     private String nome;
@@ -33,7 +35,7 @@ public class Distributore {
         return t_disponibilita;
     }
 
-    public void setDisponibilita(t_disponibilita) {
+    public void setDisponibilita(Disponibilita t_disponibilita) {
         this.t_disponibilita = t_disponibilita;
     }
 }
