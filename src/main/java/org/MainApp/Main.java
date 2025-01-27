@@ -1,6 +1,7 @@
 package org.MainApp;
 
 import jakarta.persistence.EntityManager;
+import org.DAO.DistributoreDAO;
 import org.DAO.MezzoDAO;
 import org.trasporti.ENUMS.StatoMezzo;
 import org.trasporti.ENUMS.TipoMezzo;
@@ -12,6 +13,7 @@ public class Main {
         EntityManager em = EntityManagerUtil.getEntityManager();
         try {
             MezzoDAO mezzoDAO = new MezzoDAO(em);
+            DistributoreDAO distributoreDAO = new DistributoreDAO(em);
 
         } catch (Exception e) {
             if (em.getTransaction().isActive())
