@@ -1,0 +1,25 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.1">
+    <persistence-unit name="gestionetrasportiPU">
+
+        <class>Distributore</class>
+        <class>Abbonamento</class>
+        <class>Tessera</class>
+        <class>Biglietto</class>
+        <class>Timbro</class>
+        <class>Mezzo</class>
+        <class>Manutenzione</class>
+        <class>Tratta</class>
+        <class>Percorrenza</class>
+
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/gestionetrasporti"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres" />
+            <property name="jakarta.persistence.jdbc.password" value="6181" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
