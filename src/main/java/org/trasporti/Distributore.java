@@ -2,11 +2,12 @@ package org.trasporti;
 
 import jakarta.persistence.*;
 import org.trasporti.ENUMS.Disponibilita;
+
 @Entity
-@Table(name="distributori")
+@Table(name = "distributori")
 public class Distributore {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String nome;
@@ -15,7 +16,7 @@ public class Distributore {
     private Disponibilita t_disponibilita;
 
     // Costruttore
-    public Distributore(int id, String nome, Disponibilita t_disponibilita) {
+    public Distributore(Long id, String nome, Disponibilita t_disponibilita) {
         this.id = (long) id;
         this.nome = nome;
         this.t_disponibilita = t_disponibilita;
@@ -26,12 +27,8 @@ public class Distributore {
     }
 
     // Getter e Setter
-    public int getId() {
-        return Math.toIntExact(id);
-    }
-
-    public void setId(int id) {
-        this.id = (long) id;
+    public Long getId() {
+        return id;
     }
 
     public String getNome() {
