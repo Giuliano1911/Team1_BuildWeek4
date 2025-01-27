@@ -11,6 +11,7 @@ public class Distributore {
     @Column
     private String nome;
     @Column
+    @Enumerated(EnumType.STRING)
     private Disponibilita t_disponibilita;
 
     // Costruttore
