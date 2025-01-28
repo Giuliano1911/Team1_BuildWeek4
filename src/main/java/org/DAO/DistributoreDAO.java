@@ -42,4 +42,11 @@ public class DistributoreDAO {
         this.em.getTransaction().commit();
         return list;
     }
+
+    public List<Distributore> getAllActive() {
+        this.em.getTransaction().begin();
+        List<Distributore> list = em.createQuery("SELECT d FROM Distributore d WHERE d.disponibilita = ATTIVO", Distributore.class).getResultList();
+        this.em.getTransaction().commit();
+        return list;
+    }
 }

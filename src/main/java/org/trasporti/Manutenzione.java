@@ -14,7 +14,7 @@ public class Manutenzione {
 
     @ManyToOne
     @JoinColumn(name = "id_mezzo")
-    private Integer idMezzo;
+    private Mezzo mezzo;
 
     private String descrizione;
 
@@ -27,15 +27,15 @@ public class Manutenzione {
     public Manutenzione() {
     }
 
-    public Manutenzione(Integer mezzoId, String descrizione, LocalDate dataInizio, LocalDate dataFine) {
-        this.idMezzo = mezzoId;
+    public Manutenzione(Mezzo mezzo, String descrizione, LocalDate dataInizio, LocalDate dataFine) {
+        this.mezzo = mezzo;
         this.descrizione = descrizione;
         this.dataInizio = dataInizio;
         this.dataFine = dataFine;
     }
 
-    public Manutenzione(Integer mezzoId, String descrizione, LocalDate dataInizio) {
-        this.idMezzo = mezzoId;
+    public Manutenzione(Mezzo mezzo, String descrizione, LocalDate dataInizio) {
+        this.mezzo = mezzo;
         this.descrizione = descrizione;
         this.dataInizio = dataInizio;
     }
@@ -44,12 +44,12 @@ public class Manutenzione {
         return id;
     }
 
-    public Integer getMezzoId() {
-        return idMezzo;
+    public Mezzo getMezzo() {
+        return mezzo;
     }
 
-    public void setMezzoId(Integer mezzoId) {
-        this.idMezzo = mezzoId;
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 
     public String getDescrizione() {
@@ -80,7 +80,7 @@ public class Manutenzione {
     public String toString() {
         return "Manutenzione{" +
                 "id=" + id +
-                ", mezzoId=" + idMezzo +
+                ", mezzo=" + mezzo.getId() +
                 ", descrizione='" + descrizione + '\'' +
                 ", dataInizio=" + dataInizio +
                 ", dataFine=" + dataFine +

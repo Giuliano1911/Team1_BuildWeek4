@@ -3,7 +3,9 @@ package org.DAO;
 import jakarta.persistence.EntityManager;
 import org.trasporti.Tessera;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Scanner;
 
 public class TesseraDAO {
 
@@ -41,6 +43,23 @@ public class TesseraDAO {
         List<Tessera> list = em.createQuery("SELECT t FROM Tessera t", Tessera.class).getResultList();
         this.em.getTransaction().commit();
         return list;
+    }
+
+    public boolean verificaValidita(Long id) {
+        this.em.getTransaction().begin();
+        Tessera tessera = this.em.find(Tessera.class, id);
+        if (tessera == null) {
+            System.out.println("Tessera non trovata");
+            return false;
+        }
+        if (tessera.getDataEmissione().plusDays(360).isAfter(LocalDate.now())) {
+            System.out.println(tessera);
+            return true;
+        }
+        System.out.println("Tessera scaduta, rinnovo in corso...");
+        tessera.setDataEmissione(LocalDate.now());
+        System.out.println("Scheda rinnovata, nuova scadenza: " + tessera.getDataEmissione().plusDays(360));
+        return true;
     }
 }
 

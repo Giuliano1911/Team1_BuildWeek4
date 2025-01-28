@@ -1,6 +1,5 @@
 package org.trasporti;
 
-import org.postgresql.util.PGInterval;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,22 +12,21 @@ public class Percorrenza {
 
     @ManyToOne
     @JoinColumn(name = "id_mezzo")
-    private Integer idMezzo;
+    private Mezzo mezzo;
 
     @ManyToOne
     @JoinColumn(name = "id_tratta")
-    private Integer idTratta;
+    private Tratta tratta;
 
     @Column(name = "tempo_effettivo")
-    private PGInterval tempoEffettivo;
+    private String tempoEffettivo;
 
     public Percorrenza() {
     }
 
-    public Percorrenza(Long id, Integer idMezzo, Integer idTratta, PGInterval tempoEffettivo) {
-        this.id = id;
-        this.idMezzo = idMezzo;
-        this.idTratta = idTratta;
+    public Percorrenza(Mezzo mezzo, Tratta tratta, String tempoEffettivo) {
+        this.mezzo = mezzo;
+        this.tratta = tratta;
         this.tempoEffettivo = tempoEffettivo;
     }
 
@@ -36,27 +34,27 @@ public class Percorrenza {
         return id;
     }
 
-    public Integer getIdMezzo() {
-        return idMezzo;
+    public Mezzo getMezzo() {
+        return mezzo;
     }
 
-    public void setIdMezzo(Integer idMezzo) {
-        this.idMezzo = idMezzo;
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 
-    public Integer getIdTratta() {
-        return idTratta;
+    public Tratta getTratta() {
+        return tratta;
     }
 
-    public void setIdTratta(Integer idTratta) {
-        this.idTratta = idTratta;
+    public void setTratta(Tratta tratta) {
+        this.tratta = tratta;
     }
 
-    public PGInterval getTempoEffettivo() {
+    public String getTempoEffettivo() {
         return tempoEffettivo;
     }
 
-    public void setTempoEffettivo(PGInterval tempoEffettivo) {
+    public void setTempoEffettivo(String tempoEffettivo) {
         this.tempoEffettivo = tempoEffettivo;
     }
 
@@ -64,9 +62,9 @@ public class Percorrenza {
     public String toString() {
         return "Percorrenza{" +
                 "id=" + id +
-                ", idMezzo=" + idMezzo +
-                ", idTratta=" + idTratta +
-                ", tempoEffettivo=" + tempoEffettivo +
+                ", mezzo=" + mezzo.getId() +
+                ", tratta=" + tratta.getId() +
+                ", tempoEffettivo='" + tempoEffettivo + '\'' +
                 '}';
     }
 }

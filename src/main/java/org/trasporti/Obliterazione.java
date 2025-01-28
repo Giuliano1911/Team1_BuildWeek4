@@ -14,11 +14,11 @@ public class Obliterazione {
 
     @ManyToOne
     @JoinColumn(name = "id_mezzo")
-    private Integer idMezzo;
+    private Mezzo mezzo;
 
     @ManyToOne
-    @Column(name = "id_biglietto")
-    private Integer idBiglietto;
+    @JoinColumn(name = "id_biglietto")
+    private Biglietto biglietto;
 
     @Column(name = "data_obliterazione")
     private LocalDate dataObliterazione;
@@ -26,9 +26,9 @@ public class Obliterazione {
     public Obliterazione() {
     }
 
-    public Obliterazione(Integer idMezzo, Integer idBiglietto, LocalDate dataObliterazione) {
-        this.idMezzo = idMezzo;
-        this.idBiglietto = idBiglietto;
+    public Obliterazione(Mezzo mezzo, Biglietto biglietto, LocalDate dataObliterazione) {
+        this.mezzo = mezzo;
+        this.biglietto = biglietto;
         this.dataObliterazione = dataObliterazione;
     }
 
@@ -36,20 +36,20 @@ public class Obliterazione {
         return id;
     }
 
-    public Integer getIdMezzo() {
-        return idMezzo;
+    public Mezzo getMezzo() {
+        return mezzo;
     }
 
-    public void setIdMezzo(Integer idMezzo) {
-        this.idMezzo = idMezzo;
+    public void setMezzo(Mezzo mezzo) {
+        this.mezzo = mezzo;
     }
 
-    public Integer getIdBiglietto() {
-        return idBiglietto;
+    public Biglietto getBiglietto() {
+        return biglietto;
     }
 
-    public void setIdBiglietto(Integer idBiglietto) {
-        this.idBiglietto = idBiglietto;
+    public void setBiglietto(Biglietto biglietto) {
+        this.biglietto = biglietto;
     }
 
     public LocalDate getDataObliterazione() {
@@ -64,8 +64,8 @@ public class Obliterazione {
     public String toString() {
         return "Obliterazione{" +
                 "id=" + id +
-                ", idMezzo=" + idMezzo +
-                ", idBiglietto=" + idBiglietto +
+                ", mezzo=" + mezzo +
+                ", biglietto=" + biglietto +
                 ", dataObliterazione=" + dataObliterazione +
                 '}';
     }

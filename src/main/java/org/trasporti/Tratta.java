@@ -1,31 +1,31 @@
 package org.trasporti;
+
 import jakarta.persistence.*;
 import org.trasporti.ENUMS.StatoMezzo;
-import org.postgresql.util.PGInterval;
 
 @Entity
-@Table ( name = "tratte")
+@Table(name = "tratte")
 public class Tratta {
 
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private Long id ;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "zona_partenza")
     private String zonaPartenza;
 
-    @Column(name = "stato_mezzo")
-    private StatoMezzo statoMezzo;
+    @Column(name = "capolinea")
+    private String capolinea;
 
     @Column(name = "tempo_percorrenza")
-    private PGInterval tempoPercorrenza;
+    private String tempoPercorrenza;
 
     public Tratta() {
     }
 
-    public Tratta(String zonaPartenza, StatoMezzo statoMezzo, PGInterval tempoPercorrenza) {
+    public Tratta(String zonaPartenza, String capolinea, String tempoPercorrenza) {
         this.zonaPartenza = zonaPartenza;
-        this.statoMezzo = statoMezzo;
+        this.capolinea = capolinea;
         this.tempoPercorrenza = tempoPercorrenza;
     }
 
@@ -41,19 +41,19 @@ public class Tratta {
         this.zonaPartenza = zonaPartenza;
     }
 
-    public StatoMezzo getStatoMezzo() {
-        return statoMezzo;
+    public String getStatoMezzo() {
+        return capolinea;
     }
 
-    public void setStatoMezzo(StatoMezzo statoMezzo) {
-        this.statoMezzo = statoMezzo;
+    public void setStatoMezzo(String capolinea) {
+        this.capolinea = capolinea;
     }
 
-    public PGInterval getTempoPercorrenza() {
+    public String getTempoPercorrenza() {
         return tempoPercorrenza;
     }
 
-    public void setTempoPercorrenza(PGInterval tempoPercorrenza) {
+    public void setTempoPercorrenza(String tempoPercorrenza) {
         this.tempoPercorrenza = tempoPercorrenza;
     }
 
@@ -62,7 +62,7 @@ public class Tratta {
         return "Tratta{" +
                 "id=" + id +
                 ", zonaPartenza='" + zonaPartenza + '\'' +
-                ", statoMezzo=" + statoMezzo +
+                ", capolinea=" + capolinea +
                 ", tempoPercorrenza=" + tempoPercorrenza +
                 '}';
     }

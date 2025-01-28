@@ -6,20 +6,23 @@ import org.trasporti.ENUMS.Disponibilita;
 @Entity
 @Table(name = "distributori")
 public class Distributore {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     private String nome;
-    @Column
+
+    @Column(name = "disponibilita")
     @Enumerated(EnumType.STRING)
-    private Disponibilita t_disponibilita;
+    private Disponibilita disponibilita;
 
     // Costruttore
-    public Distributore(Long id, String nome, Disponibilita t_disponibilita) {
+    public Distributore(Long id, String nome, Disponibilita disponibilita) {
         this.id = (long) id;
         this.nome = nome;
-        this.t_disponibilita = t_disponibilita;
+        this.disponibilita = disponibilita;
     }
 
     public Distributore() {
@@ -40,11 +43,11 @@ public class Distributore {
     }
 
     public Disponibilita getDisponibilita() {
-        return t_disponibilita;
+        return disponibilita;
     }
 
-    public void setDisponibilita(Disponibilita t_disponibilita) {
-        this.t_disponibilita = t_disponibilita;
+    public void setDisponibilita(Disponibilita disponibilita) {
+        this.disponibilita = disponibilita;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class Distributore {
         return "Distributore{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", t_disponibilita=" + t_disponibilita +
+                ", disponibilita=" + disponibilita +
                 '}';
     }
 }
