@@ -1,5 +1,6 @@
 package org.trasporti;
 
+import org.postgresql.util.PGInterval;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,12 +20,12 @@ public class Percorrenza {
     private Integer idTratta;
 
     @Column(name = "tempo_effettivo")
-    private Integer tempoEffettivo;
+    private PGInterval tempoEffettivo;
 
     public Percorrenza() {
     }
 
-    public Percorrenza(Long id, Integer idMezzo, Integer idTratta, Integer tempoEffettivo) {
+    public Percorrenza(Long id, Integer idMezzo, Integer idTratta, PGInterval tempoEffettivo) {
         this.id = id;
         this.idMezzo = idMezzo;
         this.idTratta = idTratta;
@@ -51,11 +52,11 @@ public class Percorrenza {
         this.idTratta = idTratta;
     }
 
-    public Integer getTempoEffettivo() {
+    public PGInterval getTempoEffettivo() {
         return tempoEffettivo;
     }
 
-    public void setTempoEffettivo(Integer tempoEffettivo) {
+    public void setTempoEffettivo(PGInterval tempoEffettivo) {
         this.tempoEffettivo = tempoEffettivo;
     }
 
