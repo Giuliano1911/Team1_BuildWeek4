@@ -1,9 +1,7 @@
 package org.trasporti;
-import org.trasporti.ENUMS.
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
-import java.util.List;
+
 @Entity
 @Table (name = "tessere")
 public class Tessera {

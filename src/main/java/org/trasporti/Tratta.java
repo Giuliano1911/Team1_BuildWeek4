@@ -1,9 +1,7 @@
 package org.trasporti;
 import jakarta.persistence.*;
-import org.trasporti.ENUMS.
-
 import java.time.LocalDate;
-import java.util.List;
+
 @Entity
 @Table ( name = "tratte")
 public class Tratta {
@@ -26,8 +24,6 @@ public class Tratta {
     public Long getId() {
         return id;
     }
-
-
 
     public String getNomeUtente() {
         return nomeUtente;
