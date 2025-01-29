@@ -1,8 +1,10 @@
 package org.DAO;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.trasporti.Obliterazione;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ObliterazioneDAO {
@@ -41,5 +43,25 @@ public class ObliterazioneDAO {
         List<Obliterazione> list = em.createQuery("SELECT o FROM Obliterazione o", Obliterazione.class).getResultList();
         this.em.getTransaction().commit();
         return list;
+    }
+
+    public Integer getByMezzo(Long id) {
+        this.em.getTransaction().begin();
+        TypedQuery<Obliterazione> query = em.createQuery("SELECT o FROM Obliterazione o WHERE o.mezzo.id = :id", Obliterazione.class);
+        int nBiglietti = query.setParameter("id", id).getResultList().size();
+        this.em.getTransaction().commit();
+        return nBiglietti;
+    }
+
+    public Integer getByData(LocalDate dataInizio, LocalDate dataFine) {
+        this.em.getTransaction().begin();
+        List<Obliterazione> listaObliterazioni = getAll();
+        int result = 0;
+        for (Obliterazione o : listaObliterazioni) {
+            if (o.getBiglietto().getDataEmissione().isAfter(dataInizio) && o.getBiglietto().getDataEmissione().isBefore(dataFine))
+                result++;
+        }
+        this.em.getTransaction().commit();
+        return result;
     }
 }

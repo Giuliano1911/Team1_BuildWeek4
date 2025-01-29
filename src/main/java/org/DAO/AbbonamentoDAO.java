@@ -1,9 +1,11 @@
 package org.DAO;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.trasporti.Abbonamento;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AbbonamentoDAO {
@@ -41,5 +43,25 @@ public class AbbonamentoDAO {
         List<Abbonamento> list = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
         this.em.getTransaction().commit();
         return list;
+    }
+
+    public List<Abbonamento> getByDistributore(Long id) {
+        this.em.getTransaction().begin();
+        TypedQuery<Abbonamento> query = em.createQuery("SELECT a FROM Abbonamento a WHERE a.distributore.id = :id", Abbonamento.class);
+        List<Abbonamento> list = query.setParameter("id", id).getResultList();
+        this.em.getTransaction().commit();
+        return list;
+    }
+
+    public Integer getByData(LocalDate dataInizio, LocalDate dataFine) {
+        this.em.getTransaction().begin();
+        List<Abbonamento> listaAbbonamenti = getAll();
+        int result = 0;
+        for (Abbonamento a : listaAbbonamenti) {
+            if (a.getDataEmissione().isAfter(dataInizio) && a.getDataEmissione().isBefore(dataFine))
+                result++;
+        }
+        this.em.getTransaction().commit();
+        return result;
     }
 }

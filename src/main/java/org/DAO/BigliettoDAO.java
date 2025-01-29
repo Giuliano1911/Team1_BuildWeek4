@@ -1,9 +1,12 @@
 package org.DAO;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.trasporti.Abbonamento;
 import org.trasporti.Biglietto;
+import org.trasporti.Distributore;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class BigliettoDAO {
@@ -41,5 +44,25 @@ public class BigliettoDAO {
         List<Biglietto> list = em.createQuery("SELECT b FROM Biglietto b", Biglietto.class).getResultList();
         this.em.getTransaction().commit();
         return list;
+    }
+
+    public List<Biglietto> getByDistributore(Long id) {
+        this.em.getTransaction().begin();
+        TypedQuery<Biglietto> query = em.createQuery("SELECT b FROM Biglietto b WHERE b.distributore.id = :id", Biglietto.class);
+        List<Biglietto> list = query.setParameter("id", id).getResultList();
+        this.em.getTransaction().commit();
+        return list;
+    }
+
+    public Integer getByData(LocalDate dataInizio, LocalDate dataFine) {
+        this.em.getTransaction().begin();
+        List<Biglietto> listaBiglietti = getAll();
+        int result = 0;
+        for (Biglietto b : listaBiglietti) {
+            if (b.getDataEmissione().isAfter(dataInizio) && b.getDataEmissione().isBefore(dataFine))
+                result++;
+        }
+        this.em.getTransaction().commit();
+        return result;
     }
 }

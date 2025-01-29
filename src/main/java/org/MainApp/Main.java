@@ -28,6 +28,8 @@ public class Main {
             TesseraDAO tesseraDAO = new TesseraDAO(em);
             TrattaDAO trattaDAO = new TrattaDAO(em);
 
+            System.out.println(bigliettoDAO.getByDistributore(2L));
+
             String sceltaUtente = "";
             while (!sceltaUtente.equals("1") && !sceltaUtente.equals("2") && !sceltaUtente.equals("3")) {
                 System.out.println("Scegli tipo di utente");
@@ -348,12 +350,117 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         EntityManager em = EntityManagerUtil.getEntityManager();
         String input = "";
-        while (!input.equals("1") && !input.equals("2") && !input.equals("3")) {
+        while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5") && !input.equals("6")) {
             System.out.println("Che statistiche vuoi vedere?");
-            System.out.println("1. ");
-            System.out.println("2. ");
-            System.out.println("3. ");
+            System.out.println("1. Biglietti e abbonamenti emessi da un distributore a scelta");
+            System.out.println("2. Biglietti e abbonamenti emessi in un periodo di tempo a scelta");
+            System.out.println("3. Numero di biglietti obliterati in un mezzo a scelta");
+            System.out.println("4. Numero di biglietti obliterati in un periodo di tempo a scelta");
+            System.out.println("5. Numero di volte in cui un mezzo percorre una tratta");
+            System.out.println("6. Tempo medio di percorrenza di una tratta");
             input = scanner.nextLine();
+            System.out.println();
+            switch (input) {
+                case "1":
+                    System.out.println("Numero totale di biglietti e abbonamenti per il distributore scelto: " + Main.statistica1());
+                    break;
+                case "2":
+                    System.out.println("Numero di abbonamenti e biglietti emessi in un tempo scelto: " + Main.statistica2());
+                    break;
+                case "3":
+                    System.out.println("Numero di biglietti obliterati nel mezzo scelto: " + Main.statistica3());
+                    break;
+                case "4":
+                    System.out.println("Numero di biglietti obliterati in un tempo scelto: " + Main.statistica4());
+                    break;
+                case "5":
+                    System.out.println("Numero di volte che un mezzo scelto percorre una tratta scelta: " + Main.statistica5());
+                    break;
+                case "6":
+                    break;
+                default:
+                    System.out.println("Numero non valido!");
+            }
         }
+    }
+
+
+    public static Integer statistica1() {
+        Scanner scanner = new Scanner(System.in);
+        EntityManager em = EntityManagerUtil.getEntityManager();
+        DistributoreDAO distributoreDAO = new DistributoreDAO(em);
+        AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
+        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+        List<Distributore> listaDistributori = distributoreDAO.getAll();
+        long id;
+        while (true) {
+            System.out.println("Quale distributore vuoi controllare?");
+            int i = 1;
+            for (Distributore d : listaDistributori) {
+                System.out.println((i++) + ". " + d);
+            }
+            int scelta = Integer.parseInt(scanner.nextLine());
+            if (listaDistributori.size() >= scelta && scelta > 0) {
+                Distributore distributoreScelto = listaDistributori.get(scelta - 1);
+                id = distributoreScelto.getId();
+                break;
+            }
+        }
+        List<Biglietto> listaBiglietti = bigliettoDAO.getByDistributore(id);
+        List<Abbonamento> listaAbbonamenti = abbonamentoDAO.getByDistributore(id);
+        return listaAbbonamenti.size() + listaBiglietti.size();
+    }
+
+    public static Integer statistica2() {
+        Scanner scanner = new Scanner(System.in);
+        EntityManager em = EntityManagerUtil.getEntityManager();
+        AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
+        BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
+        LocalDate dataInizio, dataFine;
+        System.out.println("Inserisci data inizio periodo");
+        dataInizio = LocalDate.parse(scanner.nextLine());
+        System.out.println("Inserisci data fine periodo");
+        dataFine = LocalDate.parse(scanner.nextLine());
+
+        return abbonamentoDAO.getByData(dataInizio, dataFine) + bigliettoDAO.getByData(dataInizio, dataFine);
+    }
+
+    public static Integer statistica3() {
+        Scanner scanner = new Scanner(System.in);
+        EntityManager em = EntityManagerUtil.getEntityManager();
+        MezzoDAO mezzoDAO = new MezzoDAO(em);
+        ObliterazioneDAO obliterazioneDAO = new ObliterazioneDAO(em);
+        List<Mezzo> listaMezzi = mezzoDAO.getAll();
+        long id;
+        while (true) {
+            System.out.println("Quale mezzo vuoi controllare?");
+            int i = 1;
+            for (Mezzo m : listaMezzi) {
+                System.out.println((i++) + ". " + m);
+            }
+            int scelta = Integer.parseInt(scanner.nextLine());
+            if (listaMezzi.size() >= scelta && scelta > 0) {
+                Mezzo mezzoScelto = listaMezzi.get(scelta - 1);
+                id = mezzoScelto.getId();
+                break;
+            }
+        }
+        return obliterazioneDAO.getByMezzo(id);
+    }
+
+    public static Integer statistica4() {
+        Scanner scanner = new Scanner(System.in);
+        EntityManager em = EntityManagerUtil.getEntityManager();
+        ObliterazioneDAO obliterazioneDAO = new ObliterazioneDAO(em);
+        LocalDate dataInizio, dataFine;
+        System.out.println("Inserisci data inizio periodo");
+        dataInizio = LocalDate.parse(scanner.nextLine());
+        System.out.println("Inserisci data fine periodo");
+        dataFine = LocalDate.parse(scanner.nextLine());
+        return obliterazioneDAO.getByData(dataInizio, dataFine);
+    }
+
+    public static Integer statistica5() {
+        return null;
     }
 }
