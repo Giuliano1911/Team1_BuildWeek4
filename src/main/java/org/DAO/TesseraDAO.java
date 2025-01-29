@@ -48,6 +48,7 @@ public class TesseraDAO {
     public boolean verificaValidita(Long id) {
         this.em.getTransaction().begin();
         Tessera tessera = this.em.find(Tessera.class, id);
+        this.em.getTransaction().commit();
         if (tessera == null) {
             System.out.println("Tessera non trovata");
             return false;

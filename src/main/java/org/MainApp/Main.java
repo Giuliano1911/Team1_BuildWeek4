@@ -56,7 +56,7 @@ public class Main {
         EntityManager em = EntityManagerUtil.getEntityManager();
         TesseraDAO tesseraDAO = new TesseraDAO(em);
         String nTessera;
-        Tessera tesseraUtente;
+        Tessera tesseraUtente = new Tessera();
         while (true) {
             System.out.println("Inserisci il numero della tua tessera oppure digita 0 per crearne una nuova");
             nTessera = scanner.nextLine();
@@ -122,12 +122,11 @@ public class Main {
             System.out.println("Dove vuoi comprare il biglietto?");
             List<Distributore> listaAttivi = distributoreDAO.getAllActive();
             int i = 1;
-            for (Distributore d : listaAttivi) {
-                System.out.println(i + d.getNome());
-                i++;
-            }
+            for (Distributore d : listaAttivi)
+                System.out.println(i++ + d.getNome());
             input = Integer.parseInt(scanner.nextLine());
-            if (listaAttivi.size() <= input && input > 0) {
+            System.out.println(input);
+            if (listaAttivi.size() >= input && input > 0) {
                 newBiglietto = new Biglietto(listaAttivi.get(input - 1), LocalDate.now());
                 bigliettoDAO.save(newBiglietto);
                 System.out.println("Biglietto acquistato con successo");
@@ -150,12 +149,10 @@ public class Main {
             System.out.println("Dove vuoi comprare l'abbonamento?");
             List<Distributore> listaAttivi = distributoreDAO.getAllActive();
             int i = 1;
-            for (Distributore d : listaAttivi) {
-                System.out.println(i + d.getNome());
-                i++;
-            }
+            for (Distributore d : listaAttivi)
+                System.out.println(i++ + d.getNome());
             input = Integer.parseInt(scanner.nextLine());
-            if (listaAttivi.size() <= input && input > 0) {
+            if (listaAttivi.size() >= input && input > 0) {
                 System.out.println("Inserisci che tipo di abbonamento vuoi? (SETTIMANALE o MENSILE)");
                 String validita = scanner.nextLine();
                 abbonamento = new Abbonamento(tesseraUtente, listaAttivi.get(input - 1), LocalDate.now(), Validita.SETTIMANALE);
@@ -187,11 +184,10 @@ public class Main {
         List<Percorrenza> listaPercorrenze = percorrenzaDAO.getAll();
         while (true) {
             System.out.println("Seleziona la tratta che vuoi usare");
-            for (Percorrenza p : listaPercorrenze) {
-                System.out.println((i + 1) + ". " + p);
-            }
+            for (Percorrenza p : listaPercorrenze)
+                System.out.println((i++ + 1) + ". " + p);
             input = Integer.parseInt(scanner.nextLine());
-            if (listaPercorrenze.size() <= input && input > 0) {
+            if (listaPercorrenze.size() >= input && input > 0) {
                 System.out.println("Buon viaggio!");
                 return percorrenzaDAO.getById((long) input).getMezzo();
             }
