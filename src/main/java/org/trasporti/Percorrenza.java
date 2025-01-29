@@ -62,8 +62,9 @@ public class Percorrenza {
     public String toString() {
         return "Percorrenza{" +
                 "id=" + id +
-                ", mezzo=" + mezzo.getId() +
-                ", tratta=" + tratta.getId() +
+                ", mezzo=" + mezzo.getNumeroMezzo() +
+                ", inizioTratta=" + tratta.getZonaPartenza() +
+                ", Capolinea=" + tratta.getCapolinea() +
                 ", tempoEffettivo='" + tempoEffettivo + '\'' +
                 '}';
     }

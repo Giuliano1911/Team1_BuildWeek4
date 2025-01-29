@@ -5,23 +5,25 @@ import org.trasporti.ENUMS.StatoMezzo;
 import org.trasporti.ENUMS.TipoMezzo;
 
 @Entity
-@Table(name="mezzi")
+@Table(name = "mezzi")
 public class Mezzo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="numero_mezzo")
+    @Column(name = "numero_mezzo")
     private String numeroMezzo;
 
-    @Column(name="tipo_mezzo")
+    @Column(name = "tipo_mezzo")
     @Enumerated(EnumType.STRING)
     private TipoMezzo tipoMezzo;
 
-    @Column(name="stato_mezzo")
+    @Column(name = "stato_mezzo")
     @Enumerated(EnumType.STRING)
     private StatoMezzo statoMezzo;
+
+    private Integer nPosti;
 
     public Mezzo() {
     }
@@ -30,6 +32,7 @@ public class Mezzo {
         this.numeroMezzo = numeroMezzo;
         this.tipoMezzo = tipoMezzo;
         this.statoMezzo = statoMezzo;
+        this.nPosti = setnPosti();
     }
 
     public Long getId() {
@@ -60,6 +63,12 @@ public class Mezzo {
         this.statoMezzo = statoMezzo;
     }
 
+    public Integer setnPosti() {
+        if (this.tipoMezzo == TipoMezzo.BUS)
+            return nPosti = 30;
+        else return nPosti = 60;
+    }
+
     @Override
     public String toString() {
         return "Mezzo{" +
@@ -67,6 +76,7 @@ public class Mezzo {
                 ", numeroMezzo='" + numeroMezzo + '\'' +
                 ", tipoMezzo=" + tipoMezzo +
                 ", statoMezzo=" + statoMezzo +
+                ", numeroPosti=" + nPosti +
                 '}';
     }
 }

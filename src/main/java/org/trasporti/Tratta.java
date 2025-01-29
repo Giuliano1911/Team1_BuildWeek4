@@ -41,11 +41,11 @@ public class Tratta {
         this.zonaPartenza = zonaPartenza;
     }
 
-    public String getStatoMezzo() {
+    public String getCapolinea() {
         return capolinea;
     }
 
-    public void setStatoMezzo(String capolinea) {
+    public void setCapolinea(String capolinea) {
         this.capolinea = capolinea;
     }
 

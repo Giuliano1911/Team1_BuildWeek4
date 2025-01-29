@@ -1,6 +1,7 @@
 package org.DAO;
 
 import jakarta.persistence.EntityManager;
+import org.trasporti.Distributore;
 import org.trasporti.Mezzo;
 
 import java.util.List;
@@ -39,6 +40,13 @@ public class MezzoDAO {
     public List<Mezzo> getAll() {
         this.em.getTransaction().begin();
         List<Mezzo> list = em.createQuery("SELECT m FROM Mezzo m", Mezzo.class).getResultList();
+        this.em.getTransaction().commit();
+        return list;
+    }
+
+    public List<Mezzo> getAllWorking() {
+        this.em.getTransaction().begin();
+        List<Mezzo> list = em.createQuery("SELECT m FROM Mezzo m WHERE m.statoMezzo = FUNZIONANTE", Mezzo.class).getResultList();
         this.em.getTransaction().commit();
         return list;
     }
