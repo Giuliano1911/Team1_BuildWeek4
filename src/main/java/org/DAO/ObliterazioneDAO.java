@@ -55,7 +55,7 @@ public class ObliterazioneDAO {
 
     public Integer getByData(LocalDate dataInizio, LocalDate dataFine) {
         this.em.getTransaction().begin();
-        List<Obliterazione> listaObliterazioni = getAll();
+        List<Obliterazione> listaObliterazioni = em.createQuery("SELECT o FROM Obliterazione o", Obliterazione.class).getResultList();
         int result = 0;
         for (Obliterazione o : listaObliterazioni) {
             if (o.getBiglietto().getDataEmissione().isAfter(dataInizio) && o.getBiglietto().getDataEmissione().isBefore(dataFine))

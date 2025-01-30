@@ -55,7 +55,7 @@ public class AbbonamentoDAO {
 
     public Integer getByData(LocalDate dataInizio, LocalDate dataFine) {
         this.em.getTransaction().begin();
-        List<Abbonamento> listaAbbonamenti = getAll();
+        List<Abbonamento> listaAbbonamenti = em.createQuery("SELECT a FROM Abbonamento a", Abbonamento.class).getResultList();
         int result = 0;
         for (Abbonamento a : listaAbbonamenti) {
             if (a.getDataEmissione().isAfter(dataInizio) && a.getDataEmissione().isBefore(dataFine))

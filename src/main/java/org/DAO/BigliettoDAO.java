@@ -56,7 +56,7 @@ public class BigliettoDAO {
 
     public Integer getByData(LocalDate dataInizio, LocalDate dataFine) {
         this.em.getTransaction().begin();
-        List<Biglietto> listaBiglietti = getAll();
+        List<Biglietto> listaBiglietti = em.createQuery("SELECT b FROM Biglietto b", Biglietto.class).getResultList();;
         int result = 0;
         for (Biglietto b : listaBiglietti) {
             if (b.getDataEmissione().isAfter(dataInizio) && b.getDataEmissione().isBefore(dataFine))

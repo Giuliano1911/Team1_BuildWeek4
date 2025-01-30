@@ -11,7 +11,9 @@ import org.trasporti.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,8 +29,6 @@ public class Main {
             PercorrenzaDAO percorrenzaDAO = new PercorrenzaDAO(em);
             TesseraDAO tesseraDAO = new TesseraDAO(em);
             TrattaDAO trattaDAO = new TrattaDAO(em);
-
-            System.out.println(bigliettoDAO.getByDistributore(2L));
 
             String sceltaUtente = "";
             while (!sceltaUtente.equals("1") && !sceltaUtente.equals("2") && !sceltaUtente.equals("3")) {
@@ -64,12 +64,13 @@ public class Main {
         while (true) {
             System.out.println("Inserisci il numero della tua tessera oppure digita 0 per crearne una nuova");
             nTessera = scanner.nextLine();
-            if (nTessera.equals("O")) {
+            if (nTessera.equals("0")) {
                 System.out.println("Inserisci il tuo nome e cognome");
                 String nome = scanner.nextLine();
                 Tessera newTessera = new Tessera(nome, LocalDate.now());
                 tesseraDAO.save(newTessera);
                 tesseraUtente = newTessera;
+                System.out.println("Tessera creata, scadenza il " + newTessera.getDataEmissione().plusDays(360));
                 break;
             } else if (tesseraDAO.verificaValidita(Long.valueOf(nTessera))) {
                 tesseraUtente = tesseraDAO.getById(Long.valueOf(nTessera));
@@ -78,11 +79,13 @@ public class Main {
         }
         String input = "";
         while (!input.equals("1") && !input.equals("2") && !input.equals("3")) {
+            String input2;
             System.out.println("Cosa vuoi fare?");
             System.out.println("1. Comprare biglietto");
             System.out.println("2. Comprare abbonamento");
             System.out.println("3. Prendere un mezzo");
             input = scanner.nextLine();
+
             switch (input) {
                 case "1":
                     Main.compraBiglietto();
@@ -95,23 +98,22 @@ public class Main {
                         System.out.println("Hai già un biglietto o un abbonamento?");
                         System.out.println("1. Si");
                         System.out.println("2. No");
-                        input = scanner.nextLine();
-                        switch (input) {
+                        input2 = scanner.nextLine();
+                        switch (input2) {
                             case "1":
                                 sceltaMezzo();
                                 break;
                             case "2":
                                 System.out.println("Allora compralo!");
+                                input = "";
                                 break;
                             default:
                         }
-                    } while (!input.equals("1") && !input.equals("2"));
-                    input = "";
+                    } while (!input2.equals("1") && !input2.equals("2"));
                     break;
                 default:
                     System.out.println("Numero non valido, prova ad inserire 1 o 2 o 3");
             }
-
         }
     }
 
@@ -177,6 +179,7 @@ public class Main {
         biglietto.setTimbrato(Timbrato.TIMBRATO);
         Obliterazione obliterazione = new Obliterazione(mezzo, biglietto, LocalDate.now());
         obliterazioneDAO.save(obliterazione);
+        System.out.println("Biglietto timbrato");
     }
 
     public static Mezzo sceltaMezzo() {
@@ -186,7 +189,7 @@ public class Main {
         MezzoDAO mezzoDAO = new MezzoDAO(em);
         int i = 1;
         int input;
-        List<Percorrenza> listaPercorrenze = percorrenzaDAO.getAll();
+        List<Percorrenza> listaPercorrenze = percorrenzaDAO.getAllWorking();
         while (true) {
             System.out.println("Seleziona la tratta che vuoi usare");
             for (Percorrenza p : listaPercorrenze)
@@ -203,14 +206,18 @@ public class Main {
     public static void amministratore() {
         Scanner scanner = new Scanner(System.in);
         String input = "";
-        while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4")) {
+        while (!input.equals("0")) {
             System.out.println("Cosa vuoi fare?");
+            System.out.println("0. Esci dal programma");
             System.out.println("1. Manutenzione e gestione mezzi");
             System.out.println("2. Creazione nuove tratte");
             System.out.println("3. Creazione nuova percorrenza");
             System.out.println("4. Visualizza statistiche");
             input = scanner.nextLine();
             switch (input) {
+                case "0":
+                    System.out.println("Arrivederci!");
+                    break;
                 case "1":
                     Main.manutenzione();
                     break;
@@ -239,6 +246,7 @@ public class Main {
             System.out.println("Cosa vuoi fare?");
             System.out.println("1. Nuova manutenzione");
             System.out.println("2. Termina una manutenzione esistente");
+            System.out.println("3. Crea un nuovo mezzo");
             input = scanner.nextLine();
             switch (input) {
                 case "1":
@@ -255,6 +263,7 @@ public class Main {
                         mezzoDaManutenzionare.setStatoMezzo(StatoMezzo.GUASTO);
                         Manutenzione newManutenzione = new Manutenzione(mezzoDaManutenzionare, descr, LocalDate.now());
                         manutenzioneDAO.save(newManutenzione);
+                        System.out.println("Manutenzione iniziata in data " + LocalDate.now());
                     }
                     break;
                 case "2":
@@ -269,11 +278,13 @@ public class Main {
                         Mezzo mezzoDaAggiornare = manutenzioneDaAggiornare.getMezzo();
                         mezzoDaAggiornare.setStatoMezzo(StatoMezzo.FUNZIONANTE);
                         manutenzioneDaAggiornare.setDataFine(LocalDate.now());
+                        manutenzioneDAO.getAll();
+                        System.out.println("Manutenzione terminata in data " + LocalDate.now());
                     }
                     break;
                 case "3":
                     while (true) {
-                        System.out.println("Che mezzo vuoi creare? (TRAM | BUS");
+                        System.out.println("Che mezzo vuoi creare? (TRAM | BUS)");
                         String tipoMezzo = scanner.nextLine();
                         TipoMezzo tipoMezzo1;
                         if (tipoMezzo.equalsIgnoreCase("TRAM") || tipoMezzo.equalsIgnoreCase("BUS")) {
@@ -309,6 +320,7 @@ public class Main {
         Tratta newTratta = new Tratta(partenza, capolinea, tempoStimato);
         try {
             trattaDAO.save(newTratta);
+            System.out.println("Nuova tratta creata");
         } catch (Exception ignored) {
         }
     }
@@ -335,11 +347,12 @@ public class Main {
                     System.out.println((j++) + ". " + m);
                 }
                 int scelta2 = Integer.parseInt(scanner.nextLine());
-                if (listaTratte.size() >= scelta2 && scelta2 > 0) {
-                    Mezzo mezzoScelto = listaMezzi.get(j - 1);
+                if (listaMezzi.size() >= scelta2 && scelta2 > 0) {
+                    Mezzo mezzoScelto = listaMezzi.get(scelta2 - 1);
                     System.out.println("Inserisci il tempo effettivo di percorrenza (OO:MM:SS)");
                     String tempo = scanner.nextLine();
                     Percorrenza newPercorrenza = new Percorrenza(mezzoScelto, trattaScelta, tempo);
+                    System.out.println("Nuova percorrenza creata");
                     break;
                 }
             }
@@ -374,9 +387,10 @@ public class Main {
                     System.out.println("Numero di biglietti obliterati in un tempo scelto: " + Main.statistica4());
                     break;
                 case "5":
-                    System.out.println("Numero di volte che un mezzo scelto percorre una tratta scelta: " + Main.statistica5());
+                    System.out.println("Numero di volte in cui il mezzo scelto percorre la tratta scelta: " + Main.statistica5());
                     break;
                 case "6":
+                    System.out.println("Tempo di percorrenza medio della tratta scelta: " + Main.statistica6());
                     break;
                 default:
                     System.out.println("Numero non valido!");
@@ -417,9 +431,9 @@ public class Main {
         AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
         BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
         LocalDate dataInizio, dataFine;
-        System.out.println("Inserisci data inizio periodo");
+        System.out.println("Inserisci data inizio periodo (yyyy-mm-dd)");
         dataInizio = LocalDate.parse(scanner.nextLine());
-        System.out.println("Inserisci data fine periodo");
+        System.out.println("Inserisci data fine periodo (yyyy-mm-dd)");
         dataFine = LocalDate.parse(scanner.nextLine());
 
         return abbonamentoDAO.getByData(dataInizio, dataFine) + bigliettoDAO.getByData(dataInizio, dataFine);
@@ -453,14 +467,75 @@ public class Main {
         EntityManager em = EntityManagerUtil.getEntityManager();
         ObliterazioneDAO obliterazioneDAO = new ObliterazioneDAO(em);
         LocalDate dataInizio, dataFine;
-        System.out.println("Inserisci data inizio periodo");
+        System.out.println("Inserisci data inizio periodo (yyyy-mm-dd)");
         dataInizio = LocalDate.parse(scanner.nextLine());
-        System.out.println("Inserisci data fine periodo");
+        System.out.println("Inserisci data fine periodo (yyyy-mm-dd)");
         dataFine = LocalDate.parse(scanner.nextLine());
         return obliterazioneDAO.getByData(dataInizio, dataFine);
     }
 
     public static Integer statistica5() {
-        return null;
+        Scanner scanner = new Scanner(System.in);
+        EntityManager em = EntityManagerUtil.getEntityManager();
+        MezzoDAO mezzoDAO = new MezzoDAO(em);
+        TrattaDAO trattaDAO = new TrattaDAO(em);
+        PercorrenzaDAO percorrenzaDAO = new PercorrenzaDAO(em);
+        List<Tratta> listaTratte = trattaDAO.getAll();
+        List<Mezzo> listaMezzi = mezzoDAO.getAll();
+        long idM, idT;
+        while (true) {
+            System.out.println("Quale mezzo vuoi controllare?");
+            int i = 1;
+            for (Mezzo m : listaMezzi) {
+                System.out.println((i++) + ". " + m);
+            }
+            int scelta = Integer.parseInt(scanner.nextLine());
+            if (listaMezzi.size() >= scelta && scelta > 0) {
+                Mezzo mezzoScelto = listaMezzi.get(scelta - 1);
+                idM = mezzoScelto.getId();
+                break;
+            }
+        }
+        while (true) {
+            System.out.println("Quale tratta vuoi controllare?");
+            int j = 1;
+            for (Tratta t : listaTratte) {
+                System.out.println((j++) + ". " + t);
+            }
+            int scelta2 = Integer.parseInt(scanner.nextLine());
+            if (listaTratte.size() >= scelta2 && scelta2 > 0) {
+                Tratta trattaScelta = listaTratte.get(scelta2 - 1);
+                idT = trattaScelta.getId();
+                break;
+            }
+        }
+        return percorrenzaDAO.getByMezzoAndTrattaId(idM, idT).size();
+    }
+
+    public static String statistica6() {
+        Scanner scanner = new Scanner(System.in);
+        EntityManager em = EntityManagerUtil.getEntityManager();
+        TrattaDAO trattaDAO = new TrattaDAO(em);
+        PercorrenzaDAO percorrenzaDAO = new PercorrenzaDAO(em);
+        List<Tratta> listaTratte = trattaDAO.getAll();
+        Long id;
+        while (true) {
+            System.out.println("Quale tratta vuoi controllare?");
+            int j = 1;
+            for (Tratta t : listaTratte) {
+                System.out.println((j++) + ". " + t);
+            }
+            int scelta2 = Integer.parseInt(scanner.nextLine());
+            if (listaTratte.size() >= scelta2 && scelta2 > 0) {
+                Tratta trattaScelta = listaTratte.get(scelta2 - 1);
+                id = trattaScelta.getId();
+                break;
+            }
+        }
+        int t = percorrenzaDAO.getAll().stream()
+                .filter(percorrenza -> Objects.equals(percorrenza.getTratta().getId(), id))
+                .collect(Collectors.averagingInt(percorrenze -> Interval.travelTimeToSeconds(percorrenze.getTempoEffettivo())))
+                .intValue();
+        return Interval.secondsToTravelTime(t);
     }
 }
