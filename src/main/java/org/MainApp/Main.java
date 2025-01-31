@@ -21,16 +21,6 @@ public class Main {
         EntityManager em = EntityManagerUtil.getEntityManager();
         Scanner scanner = new Scanner(System.in);
         try {
-            MezzoDAO mezzoDAO = new MezzoDAO(em);
-            ManutenzioneDAO manutenzioneDAO = new ManutenzioneDAO(em);
-            DistributoreDAO distributoreDAO = new DistributoreDAO(em);
-            AbbonamentoDAO abbonamentoDAO = new AbbonamentoDAO(em);
-            BigliettoDAO bigliettoDAO = new BigliettoDAO(em);
-            ObliterazioneDAO obliterazioneDAO = new ObliterazioneDAO(em);
-            PercorrenzaDAO percorrenzaDAO = new PercorrenzaDAO(em);
-            TesseraDAO tesseraDAO = new TesseraDAO(em);
-            TrattaDAO trattaDAO = new TrattaDAO(em);
-
             String sceltaUtente = "";
             while (!sceltaUtente.equals("1") && !sceltaUtente.equals("2") && !sceltaUtente.equals("3")) {
                 System.out.println("Scegli tipo di utente");
