@@ -51,7 +51,7 @@ public class Main {
         EntityManager em = EntityManagerUtil.getEntityManager();
         TesseraDAO tesseraDAO = new TesseraDAO(em);
         String nTessera;
-        Tessera tesseraUtente = new Tessera();
+        Tessera tesseraUtente;
         while (true) {
             System.out.println("Inserisci il numero della tua tessera oppure digita 0 per crearne una nuova");
             nTessera = scanner.nextLine();
@@ -163,11 +163,10 @@ public class Main {
                         if (validita.equalsIgnoreCase("SETTIMANALE") || validita.equalsIgnoreCase("MENSILE")) {
                             if (validita.equalsIgnoreCase("SETTIMANALE")) {
                                 validita1 = Validita.SETTIMANALE;
-                                break;
                             } else {
                                 validita1 = Validita.MENSILE;
-                                break;
                             }
+                            break;
                         } else System.out.println("Valore non valido");
                     }
                     abbonamento = new Abbonamento(tesseraUtente, listaAttivi.get(input - 1), LocalDate.now(), validita1);
@@ -183,7 +182,6 @@ public class Main {
     }
 
     public static void usaBiglietto(Biglietto biglietto, Mezzo mezzo) {
-        Scanner scanner = new Scanner(System.in);
         EntityManager em = EntityManagerUtil.getEntityManager();
         ObliterazioneDAO obliterazioneDAO = new ObliterazioneDAO(em);
         biglietto.setTimbrato(Timbrato.TIMBRATO);
@@ -196,7 +194,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         EntityManager em = EntityManagerUtil.getEntityManager();
         PercorrenzaDAO percorrenzaDAO = new PercorrenzaDAO(em);
-        MezzoDAO mezzoDAO = new MezzoDAO(em);
         int input;
         List<Percorrenza> listaPercorrenze = percorrenzaDAO.getAllWorking();
         while (true) {
@@ -387,6 +384,7 @@ public class Main {
                             else System.out.println("Tempo non valido");
                         }
                         Percorrenza newPercorrenza = new Percorrenza(mezzoScelto, trattaScelta, tempo);
+                        percorrenzaDAO.save(newPercorrenza);
                         System.out.println("Nuova percorrenza creata");
                         break;
                     }
@@ -399,7 +397,6 @@ public class Main {
 
     public static void statistiche() {
         Scanner scanner = new Scanner(System.in);
-        EntityManager em = EntityManagerUtil.getEntityManager();
         String input = "";
         while (!input.equals("1") && !input.equals("2") && !input.equals("3") && !input.equals("4") && !input.equals("5") && !input.equals("6")) {
             System.out.println("Che statistiche vuoi vedere?");
